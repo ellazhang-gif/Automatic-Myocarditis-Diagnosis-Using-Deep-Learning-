@@ -111,8 +111,8 @@ def read_txt(txt_path):
     txt_data = [line.strip() for line in lines]
     return txt_data
 
-class CovidCTDataset(Dataset):
-    def __init__(self, root_dir, txt_COVID, txt_NonCOVID, transform=None):
+class MyocarditisCMRDataset(Dataset):
+    def __init__(self, root_dir, txt_abnormal, txt_normal, transform=None):
         """
         Args:
             txt_path (string): Path to the txt file with annotations.
@@ -121,18 +121,18 @@ class CovidCTDataset(Dataset):
                 on a sample.
         File structure:
         - root_dir
-            - CT_COVID
+            - CMR_Abnormal
                 - img1.png
                 - img2.png
                 - ......
-            - CT_NonCOVID
+            - CMR_Normal
                 - img1.png
                 - img2.png
                 - ......
         """
         self.root_dir = root_dir
-        self.txt_path = [txt_COVID,txt_NonCOVID]
-        self.classes = ['CT_COVID', 'CT_NonCOVID']
+        self.txt_path = [txt_abnormal,txt_normal]
+        self.classes = ['CMR_Abnormal', 'CMR_normal']
         self.num_cls = len(self.classes)
         self.img_list = []
         for c in range(self.num_cls):
