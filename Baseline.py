@@ -179,17 +179,17 @@ class LabelSmoothingCrossEntropy(nn.Module):
 
     
 if __name__ == '__main__':
-    trainset = CovidCTDataset(root_dir='new_data/4.4_image',
+    trainset = MyocarditisCMRDataset(root_dir='new_data/4.4_image',
                               txt_COVID='new_data/newtxt/train.txt',
-                              txt_NonCOVID='old_data/oldtxt/trainCT_NonCOVID.txt',
+                              txt_NonCOVID='old_data/oldtxt/trainCMR_Normal.txt',
                               transform= train_transformer)
-    valset = CovidCTDataset(root_dir='new_data/4.4_image',
+    valset = MyocarditisCMRDataset(root_dir='new_data/4.4_image',
                               txt_COVID='new_data/newtxt/val.txt',
-                              txt_NonCOVID='old_data/oldtxt/valCT_NonCOVID.txt',
+                              txt_NonCOVID='old_data/oldtxt/valCMR_Normal.txt',
                               transform= val_transformer)
-    testset = CovidCTDataset(root_dir='new_data/4.4_image',
+    testset = MyocarditisCMRDataset(root_dir='new_data/4.4_image',
                               txt_COVID='new_data/newtxt/test.txt',
-                              txt_NonCOVID='old_data/oldtxt/testCT_NonCOVID.txt',
+                              txt_NonCOVID='old_data/oldtxt/testCMR_Normal.txt',
                               transform= val_transformer)
     print(trainset.__len__())
     print(valset.__len__())
