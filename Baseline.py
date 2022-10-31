@@ -457,9 +457,25 @@ class DenseNetModel(nn.Module):
     def forward(self, x):
         logits = self.dense_net(x)
         return logits
+
+class ResNet18Model(nn.Module):
+
+    def __init__(self):
+        """
+        Pass in parsed HyperOptArgumentParser to the model
+        :param hparams:
+        """
+        super(ResNet18Model, self).__init__()
+
+        self.res_net_18 = xrv.models.DenseNet(num_classes=2)
+        self.criterion = nn.CrossEntropyLoss()
+
+    def forward(self, x):
+        logits = self.res_net_18(x)
+        return logits
     
-model = DenseNetModel().cuda()
-modelname = 'DenseNet_medical'
+model = ResNet18Model().cuda()
+modelname = 'ResNet18_medical'
 # print(model)
 
 
