@@ -179,17 +179,17 @@ class LabelSmoothingCrossEntropy(nn.Module):
 
     
 if __name__ == '__main__':
-    trainset = MyocarditisCMRDataset(root_dir='new_data/4.4_image',
-                              txt_Abnormal='new_data/newtxt/train.txt',
-                              txt_Normal='old_data/oldtxt/trainCMR_Normal.txt',
+    trainset = MyocarditisCMRDataset(root_dir='run/data',
+                              txt_Abnormal='run/Abnormal_train.txt',
+                              txt_Normal='run/Normal_train.txt',
                               transform= train_transformer)
     valset = MyocarditisCMRDataset(root_dir='new_data/4.4_image',
-                              txt_Abnormal='new_data/newtxt/val.txt',
-                              txt_Normal='old_data/oldtxt/valCMR_Normal.txt',
+                              txt_Abnormal='run/Abnormal_val.txt',
+                              txt_Normal='run/Normal_val.txt',
                               transform= val_transformer)
     testset = MyocarditisCMRDataset(root_dir='new_data/4.4_image',
-                              txt_Abnormal='new_data/newtxt/test.txt',
-                              txt_Normal='old_data/oldtxt/testCMR_Normal.txt',
+                              txt_Abnormal='run/Abnormal_test.txt',
+                              txt_Normal='run/Normal_test.txt',
                               transform= val_transformer)
     print(trainset.__len__())
     print(valset.__len__())
