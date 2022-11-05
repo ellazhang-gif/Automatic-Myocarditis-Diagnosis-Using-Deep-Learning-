@@ -183,11 +183,11 @@ if __name__ == '__main__':
                               txt_Abnormal='run/Abnormal_train.txt',
                               txt_Normal='run/Normal_train.txt',
                               transform= train_transformer)
-    valset = MyocarditisCMRDataset(root_dir='new_data/4.4_image',
+    valset = MyocarditisCMRDataset(root_dir='run/data',
                               txt_Abnormal='run/Abnormal_val.txt',
                               txt_Normal='run/Normal_val.txt',
                               transform= val_transformer)
-    testset = MyocarditisCMRDataset(root_dir='new_data/4.4_image',
+    testset = MyocarditisCMRDataset(root_dir='run/data',
                               txt_Abnormal='run/Abnormal_test.txt',
                               txt_Normal='run/Normal_test.txt',
                               transform= val_transformer)
