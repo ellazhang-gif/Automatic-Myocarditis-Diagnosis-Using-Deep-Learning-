@@ -121,18 +121,18 @@ class MyocarditisCMRDataset(Dataset):
                 on a sample.
         File structure:
         - root_dir
-            - CMR_Abnormal
+            - Abnormal
                 - img1.png
                 - img2.png
                 - ......
-            - CMR_Normal
+            - Normal
                 - img1.png
                 - img2.png
                 - ......
         """
         self.root_dir = root_dir
         self.txt_path = [txt_abnormal,txt_normal]
-        self.classes = ['CMR_Abnormal', 'CMR_normal']
+        self.classes = ['Abnormal', 'Normal']
         self.num_cls = len(self.classes)
         self.img_list = []
         for c in range(self.num_cls):
