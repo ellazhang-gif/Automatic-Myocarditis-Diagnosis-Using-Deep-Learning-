@@ -18,7 +18,6 @@ from torchvision import transforms, utils
 from torch.utils.data import DataLoader
 import torchvision.datasets as datasets
 from torchvision.datasets import ImageFolder
-from torchvision.models import resnet18, ResNet18_Weights
 import torch.nn.functional as F
 import torch.nn as nn
 import torch.optim as optim
@@ -41,6 +40,7 @@ from albumentations.pytorch.transforms import ToTensor
 from sklearn.metrics import roc_auc_score
 from skimage.io import imread, imsave
 import skimage
+from IPython import get_ipython
 
 torch.cuda.empty_cache()
 
@@ -49,7 +49,7 @@ torch.cuda.empty_cache()
 ######################################################################################################
 
 
-get_ipython().system('pip install --upgrade efficientnet-pytorch')
+#get_ipython().system('pip install --upgrade efficientnet-pytorch')
 
 
 ######################################################################################################
@@ -57,7 +57,7 @@ get_ipython().system('pip install --upgrade efficientnet-pytorch')
 
 normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 train_transformer = transforms.Compose([
-    transforms.Resize(224),
+    transforms.Resize((224,224)),
     #transforms.RandomResizedCrop((224),scale=(0.5,1.0)),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
@@ -65,7 +65,7 @@ train_transformer = transforms.Compose([
 ])
 
 val_transformer = transforms.Compose([
-    transforms.Resize(224),
+    transforms.Resize((224,224)),
     #transforms.CenterCrop(224),
     transforms.ToTensor(),
     normalize
@@ -132,13 +132,9 @@ class MyocarditisCMRDataset(Dataset):
 def reduce_loss(loss, reduction='mean'):
     return loss.mean() if reduction=='mean' else loss.sum() if reduction=='sum' else loss
 
-
 def linear_combination(x, y, epsilon):
     return epsilon * x + (1 - epsilon) * y
 
-
-def reduce_loss(loss, reduction='mean'):
-    return loss.mean() if reduction == 'mean' else loss.sum() if reduction == 'sum' else loss
 
 class LabelSmoothingCrossEntropy(nn.Module):
     def __init__(self, epsilon:float=0.1, reduction='mean'):
@@ -202,7 +198,8 @@ def train(optimizer, epoch):
     for batch_index, batch_samples in enumerate(train_loader):
         
         # move data to device
-        data, target = batch_samples['img'].to(device), batch_samples['label'].to(device)
+        data, target = batch_samples['img'], batch_samples['label']
+
 #        data = data[:, 0, :, :]
 #        data = data[:, None, :, :]
 #         data, targets_a, targets_b, lam = mixup_data(data, target.long(), alpha, use_cuda=True)
@@ -267,7 +264,8 @@ def val(epoch):
         targetlist=[]
         # Predict
         for batch_index, batch_samples in enumerate(val_loader):
-            data, target = batch_samples['img'].to(device), batch_samples['label'].to(device)
+            data, target = batch_samples['img'], batch_samples['label']
+
 #            data = data[:, 0, :, :]
 #            data = data[:, None, :, :]
             output = model(data)
@@ -317,7 +315,8 @@ def test(epoch):
         targetlist=[]
         # Predict
         for batch_index, batch_samples in enumerate(test_loader):
-            data, target = batch_samples['img'].to(device), batch_samples['label'].to(device)
+            data, target = batch_samples['img'], batch_samples['label']
+
 #            data = data[:, 0, :, :]
 #            data = data[:, None, :, :]
 #             print(target)
@@ -380,7 +379,7 @@ class ResNet18Model(nn.Module):
         """
         super(ResNet18Model, self).__init__()
 
-        self.res_net_18 = torchvision.models.resnet18(weights=ResNet18_Weights.DEFAULT).cuda()
+        self.res_net_18 = torchvision.models.resnet18(pretrained=True)
         self.res_net_18.fc = nn.Linear(512, num_classes=2)
         self.criterion = nn.CrossEntropyLoss()
 
@@ -388,7 +387,10 @@ class ResNet18Model(nn.Module):
         logits = self.res_net_18(x)
         return logits
 
-model = ResNet18Model()
+### ResNet18
+import torchvision.models as models
+from torchvision.models import resnet18, ResNet18_Weights
+model = models.resnet18(weights=ResNet18_Weights.DEFAULT)
 modelname = 'ResNet18'
 print(model)
 
